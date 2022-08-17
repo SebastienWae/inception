@@ -1,0 +1,69 @@
+volumes:
+  files:
+  # database:
+  # static:
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: "./requirements/nginx"
+      dockerfile: "Dockerfile"
+    ports:
+      - "443:8043"
+    volumes:
+      - files:/home/${USER}/data
+  # mariadb:
+  #   build:
+  #     context: "./requirements/mariadb"
+  #     dockerfile: "Dockerfile"
+  #   volumes:
+  #     - database:/home/${USER}/data
+  #   env_file: 
+  #     - .env-mariadb
+  #     - .env-admin
+  # redis:
+  #   build:
+  #     context: "./requirements/bonus/redis"
+  #     dockerfile: "Dockerfile"
+  wordpress:
+    build:
+      context: "./requirements/wordpress"
+      dockerfile: "Dockerfile"
+    # depends_on:
+    #   - mariadb
+    #   - redis
+    #   - nginx
+    # volumes:
+    #   - files:/home/${USER}/data
+    # env_file: 
+    #   - .env-admin
+    #   - .env-user
+  # vsftpd:
+  #   build:
+  #     context: "./requirements/bonus/vsftpd"
+  #     dockerfile: "Dockerfile"
+  #   volumes:
+  #     - files:/home/${USER}/data
+  #   env_file: 
+  #     - .env-admin
+  # adminer:
+  #   build:
+  #     context: "./requirements/bonus/adminer"
+  #     dockerfile: "Dockerfile"
+  #   env_file: 
+  #     - .env-admin
+  # graphana:
+  #   build:
+  #     context: "./requirements/bonus/graphana"
+  #     dockerfile: "Dockerfile"
+  #   env_file: 
+  #     - .env-admin
+  # static:
+  #   build:
+  #     context: "./requirements/bonus/static"
+  #     dockerfile: "Dockerfile"
+  #   ports:
+  #     - "80:8080"
+  #   volumes:
+  #     - static:/home/${USER}/data
