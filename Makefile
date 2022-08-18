@@ -3,10 +3,10 @@ DOCKER_COMPOSE = docker-compose --file srcs/docker-compose.yml
 all: gen-certs gen-env
 	$(DOCKER_COMPOSE) up -d --build
 
-gen-cert:
+cert:
 	./gen-cert.sh
 
-gen-env:
+env:
 	./gen-env.sh
 	@cat srcs/.env-admin
 	@cat srcs/.env-mariadb
