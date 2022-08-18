@@ -10,7 +10,9 @@ services:
       context: "./requirements/nginx"
       dockerfile: "Dockerfile"
     ports:
-      - "443:8043"
+      - "8043:443"
+    depends_on:
+      - wordpress
     volumes:
       - files:/home/${USER}/data
   # mariadb:
@@ -27,17 +29,18 @@ services:
   #     context: "./requirements/bonus/redis"
   #     dockerfile: "Dockerfile"
   wordpress:
+    container_name: wordpress
     build:
       context: "./requirements/wordpress"
       dockerfile: "Dockerfile"
     # depends_on:
     #   - mariadb
     #   - redis
-    #   - nginx
-    # volumes:
-    #   - files:/home/${USER}/data
-    # env_file: 
-    #   - .env-admin
+      # - nginx
+    volumes:
+      - files:/home/${USER}/data
+    env_file: 
+      - .env-admin
     #   - .env-user
   # vsftpd:
   #   build:
