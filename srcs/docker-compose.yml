@@ -1,6 +1,6 @@
 volumes:
   files:
-  # database:
+  database:
   # static:
 
 services:
@@ -15,33 +15,32 @@ services:
       - wordpress
     volumes:
       - files:/home/${USER}/data
-  # mariadb:
-  #   build:
-  #     context: "./requirements/mariadb"
-  #     dockerfile: "Dockerfile"
-  #   volumes:
-  #     - database:/home/${USER}/data
-  #   env_file: 
-  #     - .env-mariadb
-  #     - .env-admin
-  # redis:
-  #   build:
-  #     context: "./requirements/bonus/redis"
-  #     dockerfile: "Dockerfile"
+  mariadb:
+    build:
+      context: "./requirements/mariadb"
+      dockerfile: "Dockerfile"
+    volumes:
+      - database:/home/${USER}/data
+    env_file: 
+      - .env-mariadb
+      - .env-admin
   wordpress:
     container_name: wordpress
     build:
       context: "./requirements/wordpress"
       dockerfile: "Dockerfile"
-    # depends_on:
-    #   - mariadb
+    depends_on:
+      - mariadb
     #   - redis
-      # - nginx
     volumes:
       - files:/home/${USER}/data
     env_file: 
       - .env-admin
-    #   - .env-user
+      - .env-user
+  # redis:
+  #   build:
+  #     context: "./requirements/bonus/redis"
+  #     dockerfile: "Dockerfile"
   # vsftpd:
   #   build:
   #     context: "./requirements/bonus/vsftpd"

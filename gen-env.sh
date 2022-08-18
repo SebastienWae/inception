@@ -7,9 +7,7 @@ rand_str() {
 }
 
 echo "ADMIN_USERNAME=$USER" > "$SCRIPT_PATH/srcs/.env-admin"
-echo "ADMIN_PASSWORD=$(rand_str())" > "$SCRIPT_PATH/srcs/.env-admin"
-
+echo "ADMIN_PASSWORD=$(rand_str)" >> "$SCRIPT_PATH/srcs/.env-admin"
 echo "USER_USERNAME=user" > "$SCRIPT_PATH/srcs/.env-user"
-echo "USER_PASSWORD=$(rand_str())" > "$SCRIPT_PATH/srcs/.env-user"
-
-echo "MARIADB_ROOT_PASSWORD=$(rand_str())" > "$SCRIPT_PATH/srcs/.env-mariadb"
+echo "USER_PASSWORD=$(rand_str)" >> "$SCRIPT_PATH/srcs/.env-user"
+echo "MARIADB_ROOT_PASSWORD=$(rand_str)" > "$SCRIPT_PATH/srcs/.env-mariadb"
