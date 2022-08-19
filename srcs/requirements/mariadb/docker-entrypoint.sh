@@ -6,7 +6,7 @@ do_query() {
 
 if [ "$1" = 'mariadb' ]; then
   # start temporary server for bootstrapping
-  mysqld --skip-networking --default-time-zone=SYSTEM --wsrep_on=OFF \
+  gosu mysql mysqld --skip-networking --default-time-zone=SYSTEM --wsrep_on=OFF \
     --expire-logs-days=0 --loose-innodb_buffer_pool_load_at_startup=0 &
 
   # wait for server to start
@@ -43,3 +43,5 @@ if [ "$1" = 'mariadb' ]; then
   # start server as myslq user
   exec gosu mysql mysqld
 fi
+
+exec "$@"

@@ -8,9 +8,8 @@ cert:
 
 env:
 	./gen-env.sh
-	@cat srcs/.env-admin
+	@cat srcs/.env
 	@cat srcs/.env-mariadb
-	@cat srcs/.env-user
 
 up:
 	$(DOCKER_COMPOSE) up -d
