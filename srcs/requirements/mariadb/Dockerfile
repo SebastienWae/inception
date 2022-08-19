@@ -1,14 +1,18 @@
 FROM debian:buster
 
 RUN set -eux \
-    # update the packages & install gosu, envsubst, mariadb
-    && apt update && apt install -y gettext-base gosu mariadb-server \
+    # update package index
+    && apt update \
+    # install utilities
+    && apt install -y gettext-base gosu \
+    # install mariadb
+    && apt install mariadb-server \
     # create mariadb socket directory
     && mkdir /var/run/mysqld \
     && chown -R mysql:mysql /var/run/mysqld
 
 # copy the mariadb config
-COPY server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY --chown=myslq server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 RUN set -eux \
     # substitute environment variables
@@ -16,5 +20,7 @@ RUN set -eux \
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
+
+WORKDIR ${DATA_DIR}
 
 CMD mariadb
