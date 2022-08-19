@@ -18,7 +18,7 @@ COPY --chown=myslq server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 RUN set -eux \
   # substitute environment variables
-  && envsubst '${DATA_DIR}}' < /etc/mysql/mariadb.conf.d/50-server.cnf > /etc/mysql/mariadb.conf.d/50-server.cnf
+  && envsubst '$$DATA_DIR' < /etc/mysql/mariadb.conf.d/50-server.cnf > /etc/mysql/mariadb.conf.d/50-server.cnf
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]

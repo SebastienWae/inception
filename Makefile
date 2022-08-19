@@ -9,7 +9,7 @@ cert:
 env:
 	./gen-env.sh
 	@cat srcs/.env
-	@cat srcs/.env-mariadb
+	@cat srcs/.mariadb-env
 
 up:
 	$(DOCKER_COMPOSE) up -d
@@ -27,4 +27,4 @@ down:
 	$(DOCKER_COMPOSE) down
 
 clean:
-	$(DOCKER_COMPOSE) rm --force
+	$(DOCKER_COMPOSE) rm --force --volumes --stop
