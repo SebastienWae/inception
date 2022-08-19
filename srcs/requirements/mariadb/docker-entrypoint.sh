@@ -4,20 +4,15 @@ do_query() {
   mariadb --protocol=socket -uroot -hlocalhost  <<< "$@"
 }
 
-if [ "$1" = 'mysqld' ]; then
-  # if container is started as root user, restart as dedicated mysql user
-  if [ "$(id -u)" = "0" ]; then
-    echo "Switching to dedicated user 'mysql'"
-    exec gosu mysql "${BASH_SOURCE[0]}" "$@"
-  fi
-
+if [ "$1" = 'mariadb' ]; then
   # start temporary server for bootstrapping
   mysqld --skip-networking --default-time-zone=SYSTEM --wsrep_on=OFF \
-		--expire-logs-days=0 --loose-innodb_buffer_pool_load_at_startup=0 &
+    --expire-logs-days=0 --loose-innodb_buffer_pool_load_at_startup=0 &
 
-  # TODO
   # wait for server to start
-  sleep 10
+  while ! mysqladmin ping --silent; do
+      sleep 1
+  done
 
   # change root password
   do_query "UPDATE mysql.user SET Password=PASSWORD('$MARIADB_ROOT_PASSWORD') WHERE User='root';"
@@ -44,10 +39,7 @@ if [ "$1" = 'mysqld' ]; then
 
   # stop temporary server
   mysqladmin shutdown -uroot
+
+  # start server as myslq user
+  exec gosu mysql mysqld
 fi
-# start server as normal
-exec "$@"
-
-
-
-

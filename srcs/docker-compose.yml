@@ -1,42 +1,43 @@
 volumes:
   files:
   database:
-  # static:
 
 services:
   nginx:
     container_name: nginx
     build:
-      context: "./requirements/nginx"
-      dockerfile: "Dockerfile"
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
     ports:
       - "8043:443"
+      - "8080:80"
     depends_on:
       - wordpress
     volumes:
       - files:/home/${USER}/data
+    env_file: 
+      - .env
   mariadb:
     build:
-      context: "./requirements/mariadb"
-      dockerfile: "Dockerfile"
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile"
     volumes:
       - database:/home/${USER}/data
     env_file: 
-      - .env-mariadb
-      - .env-admin
+      - .env
+      - .mariadb-env
   wordpress:
     container_name: wordpress
     build:
-      context: "./requirements/wordpress"
-      dockerfile: "Dockerfile"
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     depends_on:
       - mariadb
     #   - redis
     volumes:
       - files:/home/${USER}/data
     env_file: 
-      - .env-admin
-      - .env-user
+      - .env
   # redis:
   #   build:
   #     context: "./requirements/bonus/redis"
@@ -65,7 +66,3 @@ services:
   #   build:
   #     context: "./requirements/bonus/static"
   #     dockerfile: "Dockerfile"
-  #   ports:
-  #     - "80:8080"
-  #   volumes:
-  #     - static:/home/${USER}/data
