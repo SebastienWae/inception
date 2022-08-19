@@ -40,7 +40,6 @@ services:
         - LOGIN_42=${LOGIN_42}
     depends_on:
       - mariadb
-    #   - redis
     volumes:
       - files:${DATA_DIR}
   # redis:

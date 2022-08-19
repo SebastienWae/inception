@@ -18,18 +18,18 @@ COPY --chown=www-data php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 COPY --chown=www-data www.conf /etc/php/7.3/fpm/pool.d/www.conf 
 
 # copy the nginx server config
-COPY --chown=www-data wordpress-nginx.conf ${DATA_DIR}/nginx/conf.d/${LOGIN_42}.42.fr.conf
+COPY --chown=www-data wordpress-nginx.conf $DATA_DIR/nginx/conf.d/$LOGIN_42.42.fr.conf
 
 # copy the SSL certificate
-COPY --chown=www-data *.42.fr* ${DATA_DIR}/${LOGIN_42}.42.fr/ssl/
+COPY --chown=www-data *.42.fr* $DATA_DIR/$LOGIN_42.42.fr/ssl/
 
 RUN set -eux \
     # substitute environment variables
-    && envsubst '$$DATA_DIR $$LOGIN_42' < ${DATA_DIR}/nginx/conf.d/${LOGIN_42}.42.fr.conf > ${DATA_DIR}/nginx/conf.d/{$LOGIN_42}.42.fr.conf
+    && envsubst '$$DATA_DIR $$LOGIN_42' < $DATA_DIR/nginx/conf.d/$LOGIN_42.42.fr.conf > $DATA_DIR/nginx/conf.d/$LOGIN_42.42.fr.conf
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
-WORKDIR ${DATA_DIR}
+WORKDIR $DATA_DIR
 
 CMD ["wordpress"]

@@ -26,5 +26,5 @@ build_dev:
 down:
 	$(DOCKER_COMPOSE) down
 
-clean:
-	$(DOCKER_COMPOSE) rm --force --volumes --stop
+clean: down
+	docker volume prune --force

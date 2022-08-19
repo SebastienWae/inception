@@ -18,13 +18,13 @@ RUN set -eux \
 # copy the nginx config
 COPY --chown=www-data nginx.conf /etc/nginx
 
-RUN set -eux \
-  # substitute environment variables
-  && envsubst '$$DATA_DIR' < /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
+# RUN set -eux \
+#   # substitute environment variables
+#   && envsubst '$$DATA_DIR' < /etc/nginx/nginx.conf > /etc/nginx/nginx.conf
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
-WORKDIR ${DATA_DIR}
+WORKDIR $DATA_DIR
 
 CMD ["nginx"]

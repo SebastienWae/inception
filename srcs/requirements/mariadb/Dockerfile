@@ -23,6 +23,6 @@ RUN set -eux \
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
-WORKDIR ${DATA_DIR}
+WORKDIR $DATA_DIR
 
 CMD ["mariadb"]
