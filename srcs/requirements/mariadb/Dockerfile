@@ -1,5 +1,7 @@
 FROM debian:buster
 
+ARG DATA_DIR
+
 RUN set -eux \
   # update package index
   && apt-get update \
@@ -9,14 +11,16 @@ RUN set -eux \
   && apt-get install -y mariadb-server \
   # create mariadb socket directory
   && mkdir /var/run/mysqld \
-  && chown -R mysql:mysql /var/run/mysqld
+  && chown -R mysql:mysql /var/run/mysqld \
+  # change DATA_DIR ownership
+  && chown -R mysql:mysql $DATA_DIR 
 
 # copy the mariadb config
 COPY --chown=myslq server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 RUN set -eux \
   # substitute environment variables
-  && sed -i "s/DATA_DIR/$DATA_DIR/g" /etc/mysql/mariadb.conf.d/50-server.cnf
+  && sed -i "s#DATA_DIR#$DATA_DIR#g" /etc/mysql/mariadb.conf.d/50-server.cnf
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
