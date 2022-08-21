@@ -1,4 +1,4 @@
-DOCKER_COMPOSE = docker-compose --file srcs/docker-compose.yml
+DOCKER_COMPOSE = docker compose --file srcs/docker-compose.yml
 
 all: gen-certs gen-env
 	$(DOCKER_COMPOSE) up -d --build
