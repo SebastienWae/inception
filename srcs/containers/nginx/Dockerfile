@@ -9,7 +9,7 @@ RUN set -eux \
   # install utilities
   && apt-get install -y gosu \
   # install nginx
-  && apt-get -y install nginx nginx-plus-module-lua \
+  && apt-get -y install nginx libnginx-mod-http-lua \
   # create nginx run directory
   && mkdir /var/run/nginx \
   && chown -R www-data:www-data /var/run/nginx
