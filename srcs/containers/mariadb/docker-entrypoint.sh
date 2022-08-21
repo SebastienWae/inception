@@ -8,9 +8,6 @@ if [ "$1" = 'mariadb' ]; then
   # init mariadb datadir
   mysql_install_db --rpm --auth-root-authentication-method=normal
 
-  # change DATA_DIR ownership
-  chown -R mysql:mysql $DATA_DIR 
-
   # start temporary server for bootstrapping
   gosu mysql mysqld --skip-networking --default-time-zone=SYSTEM --wsrep_on=OFF --expire-logs-days=0 --loose-innodb_buffer_pool_load_at_startup=0 &
 

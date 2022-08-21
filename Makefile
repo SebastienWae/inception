@@ -3,26 +3,30 @@ DOCKER_COMPOSE = docker compose --file srcs/docker-compose.yml
 all: gen-certs gen-pass
 	$(DOCKER_COMPOSE) up -d --build
 
-cert:
-	./srcs/tools/gen-cert.sh
-
-pass:
-	./srcs/tools/gen-pass.sh
-
 up:
-	$(DOCKER_COMPOSE) up -d
-
-up_dev:
-	$(DOCKER_COMPOSE) up --force-recreate
+	$(DOCKER_COMPOSE) up
 
 build:
-	$(DOCKER_COMPOSE) build
-
-build_dev:
 	$(DOCKER_COMPOSE) build --no-cache
+
+nginx:
+	$(DOCKER_COMPOSE) build --no-cache nginx
+
+wordpress:
+	$(DOCKER_COMPOSE) build --no-cache wordpress
+
+mariadb:
+	$(DOCKER_COMPOSE) build --no-cache mariadb
 
 down:
 	$(DOCKER_COMPOSE) down
 
 clean: down
 	docker volume prune --force
+
+prune: clean
+	docker system prune --force --volumes
+
+secrets:
+	./srcs/tools/gen-cert.sh
+	./srcs/tools/gen-pass.sh

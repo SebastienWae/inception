@@ -17,10 +17,6 @@ RUN set -eux \
 # copy the mariadb config
 COPY --chown=myslq server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-RUN set -eux \
-  # substitute environment variables
-  && sed -i "s#DATA_DIR#$DATA_DIR#g" /etc/mysql/mariadb.conf.d/50-server.cnf
-
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
