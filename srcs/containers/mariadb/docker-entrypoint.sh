@@ -20,8 +20,8 @@ if [ "$1" = 'mariadb' ]; then
   done
 
   # get passwords from secret files
-  MARIADB_ROOT_PASSWORD=$(< /run/secrets/mariadb_root_password))
-  MARIADB_WORDPRESS_PASSWORD=$(< /run/secrets/mariadb_wordpress_password))
+  MARIADB_ROOT_PASSWORD=$(< /run/secrets/mariadb_root_password)
+  MARIADB_WORDPRESS_PASSWORD=$(< /run/secrets/mariadb_wordpress_password)
 
   # change root password
   do_query "UPDATE mysql.user SET Password=PASSWORD('$MARIADB_ROOT_PASSWORD') WHERE User='root';"
