@@ -19,6 +19,10 @@ if [ "$1" = 'mariadb' ]; then
       sleep 1
   done
 
+  # get passwords from secret files
+  MARIADB_ROOT_PASSWORD=$(< /run/secrets/mariadb_root_password))
+  MARIADB_WORDPRESS_PASSWORD=$(< /run/secrets/mariadb_wordpress_password))
+
   # change root password
   do_query "UPDATE mysql.user SET Password=PASSWORD('$MARIADB_ROOT_PASSWORD') WHERE User='root';"
 
@@ -36,8 +40,8 @@ if [ "$1" = 'mariadb' ]; then
   do_query "CREATE DATABASE IF NOT EXISTS wordpress;"
 
   # create wordpress user
-  do_query "CREATE USER '$ADMIN_USERNAME'@'%' IDENTIFIED BY '$ADMIN_PASSWORD';"
-  do_query "GRANT ALL ON wordpress.* TO '$ADMIN_USERNAME'@'%' ;"
+  do_query "CREATE USER 'wordpress' IDENTIFIED BY '$MARIADB_WORDPRESS_PASSWORD';"
+  do_query "GRANT ALL ON wordpress.* TO 'wordpress' ;"
 
   # apply changes
   do_query "FLUSH PRIVILEGES;"

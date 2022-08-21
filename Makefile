@@ -1,14 +1,13 @@
 DOCKER_COMPOSE = docker compose --file srcs/docker-compose.yml
 
-all: gen-certs gen-env
+all: gen-certs gen-pass
 	$(DOCKER_COMPOSE) up -d --build
 
 cert:
-	./gen-cert.sh
+	./srcs/tools/gen-cert.sh
 
-env:
-	./gen-env.sh
-	@cat srcs/.env
+pass:
+	./srcs/tools/gen-pass.sh
 
 up:
 	$(DOCKER_COMPOSE) up -d
