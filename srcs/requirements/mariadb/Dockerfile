@@ -1,6 +1,7 @@
 FROM debian:buster
 
 ARG DATA_DIR
+ENV DATA_DIR=$DATA_DIR
 
 RUN set -eux \
   # update package index
@@ -9,11 +10,9 @@ RUN set -eux \
   && apt-get install -y gosu \
   # install mariadb
   && apt-get install -y mariadb-server \
-  # create mariadb socket directory
+  # create mariadb run directory
   && mkdir /var/run/mysqld \
-  && chown -R mysql:mysql /var/run/mysqld \
-  # change DATA_DIR ownership
-  && chown -R mysql:mysql $DATA_DIR 
+  && chown -R mysql:mysql /var/run/mysqld
 
 # copy the mariadb config
 COPY --chown=myslq server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf

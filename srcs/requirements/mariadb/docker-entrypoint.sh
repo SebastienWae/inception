@@ -5,9 +5,14 @@ do_query() {
 }
 
 if [ "$1" = 'mariadb' ]; then
+  # init mariadb datadir
+  mysql_install_db --rpm --auth-root-authentication-method=normal
+
+  # change DATA_DIR ownership
+  chown -R mysql:mysql $DATA_DIR 
+
   # start temporary server for bootstrapping
-  gosu mysql mysqld --skip-networking --default-time-zone=SYSTEM --wsrep_on=OFF \
-    --expire-logs-days=0 --loose-innodb_buffer_pool_load_at_startup=0 &
+  gosu mysql mysqld --skip-networking --default-time-zone=SYSTEM --wsrep_on=OFF --expire-logs-days=0 --loose-innodb_buffer_pool_load_at_startup=0 &
 
   # wait for server to start
   while ! mysqladmin ping --silent; do
@@ -38,7 +43,7 @@ if [ "$1" = 'mariadb' ]; then
   do_query "FLUSH PRIVILEGES;"
 
   # stop temporary server
-  mysqladmin shutdown -uroot
+  MYSQL_PWD=$MARIADB_ROOT_PASSWORD mysqladmin shutdown -uroot
 
   # start server as myslq user
   exec gosu mysql mysqld
