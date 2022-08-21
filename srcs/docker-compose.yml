@@ -2,7 +2,7 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: ./requirements/nginx
+      context: ./containers/nginx
       dockerfile: Dockerfile
       args:
         - DATA_DIR=/home/${USER}/data
@@ -31,7 +31,7 @@ services:
   mariadb:
     container_name: mariadb
     build:
-      context: ./requirements/mariadb
+      context: ./containers/mariadb
       dockerfile: Dockerfile
       args:
         - DATA_DIR=/home/${USER}/data
@@ -43,7 +43,7 @@ services:
   wordpress:
     container_name: wordpress
     build:
-      context: ./requirements/wordpress
+      context: ./containers/wordpress
       dockerfile: Dockerfile
       args:
         - DATA_DIR=/home/${USER}/data
