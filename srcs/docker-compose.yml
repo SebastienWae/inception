@@ -23,11 +23,11 @@ services:
       - source: swaegene.42.fr.crt
         uid: "33"
         gid: "33"
-        mode: 0440
+        mode: 0444
       - source: swaegene.42.fr.key
         uid: "33"
         gid: "33"
-        mode: 0440
+        mode: 0444
   mariadb:
     container_name: mariadb
     build:
