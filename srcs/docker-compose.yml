@@ -15,7 +15,7 @@ services:
       - files:/home/${USER}/data
     configs:
       - source: swaegene.42.fr
-        target: /etc/nginx/conf.d/swaegene.42.fr.conf
+        target: /etc/nginx/sites-enabled/swaegene.42.fr.conf
         uid: "33"
         gid: "33"
         mode: 0440
