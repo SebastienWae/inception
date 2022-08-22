@@ -32,10 +32,10 @@ services:
       - source: mariadb_wordpress_password
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
-      interval: 2m
+      interval: 10s
       timeout: 10s
       retries: 3
-      start_period: 1m
+      start_period: 30s
   wordpress:
     container_name: wordpress
     build:

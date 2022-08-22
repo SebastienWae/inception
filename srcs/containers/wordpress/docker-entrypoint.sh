@@ -5,6 +5,7 @@ if [ "$1" = 'wordpress' ]; then
   mkdir -p $DATA_DIR/swaegene.42.fr/public
   mkdir -p $DATA_DIR/logs/php-fpm
   mkdir -p $DATA_DIR/logs/www
+  chown -R www-data:www-data $DATA_DIR/swaegene.42.fr
 
   if [ ! -e $DATA_DIR/swaegene.42.fr/public/index.php ]; then
     wp_cli() {
