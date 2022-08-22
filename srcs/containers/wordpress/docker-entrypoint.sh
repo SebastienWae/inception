@@ -20,13 +20,11 @@ if [ "$1" = 'wordpress' ]; then
     # download wordpress
     wp_cli core download 
     # create config file
-    wp_cli config create --dbname=wordpress --dbuser=wordpress --dbpass=$(< /run/secrets/mariadb_wordpress_password) --dbhost=mariadb:3306
+    wp_cli config create --dbname=wordpress --dbuser=wordpress --dbpass=$(< /run/secrets/mariadb_wordpress_password) --dbhost=mariadb:3306 --extra-php <<< "define( 'WP_SITEURL', 'https://swaegene.42.fr' );"
     # install wordpress
     wp_cli core install --url="https://swaegene.42.fr" --title=Inception --admin_user=swaegene --admin_password=$(< /run/secrets/swaegene.42.fr_admin_password) --admin_email=swaegene@student.42mulhouse.fr --skip-email
     # create user
     wp_cli user create user user@example.com --role=author --user_pass=$(< /run/secrets/swaegene.42.fr_user_password)
-    # TODO remove wordpress-cli 
-    # rm -f wp-cli.phar
   fi
 
   # start php-fpm as www-data

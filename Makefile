@@ -19,7 +19,7 @@ mariadb:
 	$(DOCKER_COMPOSE) build --no-cache mariadb
 
 down:
-	$(DOCKER_COMPOSE) down
+	$(DOCKER_COMPOSE) down -v
 
 clean: down
 	docker volume prune --force
