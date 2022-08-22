@@ -7,8 +7,7 @@ services:
       args:
         - DATA_DIR=/home/swaegene/data
     ports:
-      - "8043:443"
-      - "8080:80"
+      - "443:443"
     depends_on:
       - wordpress
     volumes:
@@ -31,6 +30,12 @@ services:
     secrets:
       - source: mariadb_root_password
       - source: mariadb_wordpress_password
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 2m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
   wordpress:
     container_name: wordpress
     build:
@@ -39,7 +44,8 @@ services:
       args:
         - DATA_DIR=/home/swaegene/data
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     volumes:
       - files:/home/swaegene/data
     secrets:

@@ -17,6 +17,9 @@ RUN set -eux \
 # copy the mariadb config
 COPY --chown=myslq server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
+# copy healthcheck script
+COPY healthcheck.sh /usr/local/bin/
+
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
