@@ -15,7 +15,7 @@ RUN set -eux \
   && chown -R mysql:mysql /var/run/mysqld
 
 # copy the mariadb config
-COPY --chown=myslq server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY --chown=redis server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # copy healthcheck script
 COPY healthcheck.sh /usr/local/bin/

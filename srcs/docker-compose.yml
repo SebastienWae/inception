@@ -1,30 +1,14 @@
 services:
-  nginx:
-    container_name: nginx
-    build:
-      context: ./containers/nginx
-      dockerfile: Dockerfile
-      args:
-        - DATA_DIR=/home/swaegene/data
-    ports:
-      - "443:443"
-    depends_on:
-      - wordpress
-    volumes:
-      - files:/home/swaegene/data
-    configs:
-      - source: swaegene.42.fr
-        target: /etc/nginx/sites-enabled/swaegene.42.fr.conf
-    secrets:
-      - source: swaegene.42.fr.crt
-      - source: swaegene.42.fr.key
   mariadb:
     container_name: mariadb
+    restart: always
     build:
       context: ./containers/mariadb
       dockerfile: Dockerfile
       args:
         - DATA_DIR=/home/swaegene/data
+    networks:
+      - database
     volumes:
       - database:/home/swaegene/data
     secrets:
@@ -36,26 +20,80 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+  redis:
+    container_name: redis
+    restart: always
+    build:
+      context: ./containers/redis
+      dockerfile: Dockerfile
+      args:
+        - DATA_DIR=/home/swaegene/data
+    networks:
+      - redis
+    volumes:
+      - files:/home/swaegene/data
+    secrets:
+      - source: redis_password
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
   wordpress:
     container_name: wordpress
+    restart: always
     build:
       context: ./containers/wordpress
       dockerfile: Dockerfile
       args:
         - DATA_DIR=/home/swaegene/data
+    networks:
+      - database
+      - server
+      - redis
     depends_on:
       mariadb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - files:/home/swaegene/data
+    configs:
+      - source: swaegene.42.fr_setup
+        target: /home/swaegene/data/swaegene.42.fr/setup.sh
     secrets:
       - source: mariadb_wordpress_password
       - source: swaegene.42.fr_admin_password
       - source: swaegene.42.fr_user_password
+  nginx:
+    container_name: nginx
+    restart: always
+    build:
+      context: ./containers/nginx
+      dockerfile: Dockerfile
+      args:
+        - DATA_DIR=/home/swaegene/data
+    networks:
+      - server
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    volumes:
+      - files:/home/swaegene/data
+    configs:
+      - source: swaegene.42.fr_nginx
+        target: /etc/nginx/sites-enabled/swaegene.42.fr.conf
+    secrets:
+      - source: swaegene.42.fr.crt
+      - source: swaegene.42.fr.key
 
 configs:
-  swaegene.42.fr:
+  swaegene.42.fr_nginx:
     file: ./sites/swaegene.42.fr/nginx.conf
+  swaegene.42.fr_setup:
+    file: ./sites/swaegene.42.fr/setup.sh
 
 secrets:
   swaegene.42.fr.crt:
@@ -66,6 +104,8 @@ secrets:
     file: ./secrets/mariadb_root_password
   mariadb_wordpress_password:
     file: ./secrets/mariadb_wordpress_password
+  redis_password:
+    file: ./secrets/redis_password
   swaegene.42.fr_admin_password:
     file: ./secrets/swaegene.42.fr_admin_password
   swaegene.42.fr_user_password:
@@ -74,3 +114,8 @@ secrets:
 volumes:
   files:
   database:
+
+networks:
+  database:
+  server:
+  redis:
