@@ -18,6 +18,9 @@ wordpress:
 mariadb:
 	$(DOCKER_COMPOSE) build --no-cache mariadb
 
+redis:
+	$(DOCKER_COMPOSE) build --no-cache redis
+
 down:
 	$(DOCKER_COMPOSE) down -v
 

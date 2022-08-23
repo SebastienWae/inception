@@ -8,7 +8,7 @@ if [ "$1" = 'wordpress' ]; then
   chown -R www-data:www-data /var/www
 
   # setup swaegene.42.fr
-  $DATA_DIR/swaegene.42.fr/setup.sh
+  source $DATA_DIR/swaegene.42.fr/setup.sh
 
   # start php-fpm as www-data
   exec php-fpm7.3

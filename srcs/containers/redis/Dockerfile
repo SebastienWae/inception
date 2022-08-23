@@ -14,6 +14,9 @@ RUN set -eux \
 # copy the redis config
 COPY --chown=redis redis.conf /etc/redis/redis.conf
 
+# copy healthcheck script
+COPY healthcheck.sh /usr/local/bin/
+
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
