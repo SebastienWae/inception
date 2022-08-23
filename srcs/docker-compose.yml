@@ -66,6 +66,7 @@ services:
       - source: mariadb_wordpress_password
       - source: swaegene.42.fr_admin_password
       - source: swaegene.42.fr_user_password
+      - source: redis_password
   nginx:
     container_name: nginx
     restart: always

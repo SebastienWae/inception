@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-if [ ! -e $DATA_DIR/swaegene.42.fr ]; then
+if [ ! -e $DATA_DIR/swaegene.42.fr/wordpress ]; then
   mkdir -p $DATA_DIR/swaegene.42.fr/wordpress
-  chown -R www-data:www-data $DATA_DIR/swaegene.42.fr
-
+  chown -R www-data:www-data $DATA_DIR/swaegene.42.fr/wordpress
   cd $DATA_DIR/swaegene.42.fr/wordpress
 
   DB_NAME=wordpress

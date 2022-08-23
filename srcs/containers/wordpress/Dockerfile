@@ -18,7 +18,7 @@ COPY php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 
 # install wp-cli
 ADD https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp
-RUN set -eux && chmod +x /usr/local/bin/wp
+RUN set -eux && chmod +xr /usr/local/bin/wp
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
