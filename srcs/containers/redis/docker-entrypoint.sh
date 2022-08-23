@@ -9,7 +9,7 @@ if [ "$1" = 'redis' ]; then
   sed -i "s/REDIS_PASSWORD/$()/" /etc/redis/redis.conf
 
   # start server as redis user
-  exec gosu redis redis-server
+  exec gosu redis redis-server /etc/redis/redis.conf
 fi
 
 exec "$@"
