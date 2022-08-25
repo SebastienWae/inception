@@ -7,9 +7,6 @@ if [ "$1" = 'ftp' ]; then
   # add user to allowed list
   echo swaegene > /etc/vsftpd.userlist
 
-  # add passive address
-  echo "pasv_address= $(/sbin/ip route|awk '/default/ { print $3 }')" >> /etc/vsftpd.conf
-
   # start ftp server
   exec vsftpd /etc/vsftpd.conf
 fi
