@@ -78,7 +78,7 @@ services:
     networks:
       - server
     ports:
-      - "443:443"
+      - 443:443
     depends_on:
       - wordpress
     volumes:
@@ -89,6 +89,21 @@ services:
     secrets:
       - source: swaegene.42.fr.crt
       - source: swaegene.42.fr.key
+  ftp:
+    container_name: ftp
+    restart: always
+    build:
+      context: ./containers/ftp
+      dockerfile: Dockerfile
+      args:
+        - DATA_DIR=/home/swaegene/data
+    ports:
+      - 21:21
+      - 21100-21110:21100-21110
+    volumes:
+      - files:/home/swaegene/data
+    secrets:
+      - source: ftp_password
 
 configs:
   swaegene.42.fr_nginx:
@@ -111,6 +126,8 @@ secrets:
     file: ./secrets/swaegene.42.fr_admin_password
   swaegene.42.fr_user_password:
     file: ./secrets/swaegene.42.fr_user_password
+  ftp_password:
+    file: ./secrets/ftp_password
 
 volumes:
   files:

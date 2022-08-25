@@ -21,6 +21,9 @@ mariadb:
 redis:
 	$(DOCKER_COMPOSE) build --no-cache redis
 
+ftp:
+	$(DOCKER_COMPOSE) build --no-cache ftp
+
 down:
 	$(DOCKER_COMPOSE) down -v
 
