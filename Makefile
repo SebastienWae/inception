@@ -24,6 +24,12 @@ redis:
 ftp:
 	$(DOCKER_COMPOSE) build --no-cache ftp
 
+adminer:
+	$(DOCKER_COMPOSE) build --no-cache adminer
+
+goaccess:
+	$(DOCKER_COMPOSE) build --no-cache goaccess
+
 down:
 	$(DOCKER_COMPOSE) down -v
 

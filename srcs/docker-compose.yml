@@ -78,14 +78,21 @@ services:
     networks:
       - server
     ports:
+      - 80:80
       - 443:443
     depends_on:
       - wordpress
+      - adminer
+      - goaccess
     volumes:
       - files:/home/swaegene/data
     configs:
       - source: swaegene.42.fr_nginx
         target: /etc/nginx/sites-enabled/swaegene.42.fr.conf
+      - source: adminer.42.fr_nginx
+        target: /etc/nginx/sites-enabled/adminer.42.fr.conf
+      - source: goaccess.42.fr_nginx
+        target: /etc/nginx/sites-enabled/goaccess.42.fr.conf
     secrets:
       - source: swaegene.42.fr.crt
       - source: swaegene.42.fr.key
@@ -105,12 +112,39 @@ services:
       - files:/home/swaegene/data
     secrets:
       - source: ftp_password
+  adminer:
+    container_name: adminer
+    build:
+      context: ./containers/adminer
+      dockerfile: Dockerfile
+      args:
+        - DATA_DIR=/home/swaegene/data
+    volumes:
+      - files:/home/swaegene/data
+    networks:
+      - database
+  goaccess:
+    container_name: goaccess
+    build:
+      context: ./containers/goaccess
+      dockerfile: Dockerfile
+      args:
+        - DATA_DIR=/home/swaegene/data
+    ports:
+      - 9999:9999
+      - 7890:7890
+    volumes:
+      - files:/home/swaegene/data
 
 configs:
   swaegene.42.fr_nginx:
     file: ./sites/swaegene.42.fr/nginx.conf
   swaegene.42.fr_setup:
     file: ./sites/swaegene.42.fr/setup.sh
+  adminer.42.fr_nginx:
+    file: ./sites/adminer.42.fr/nginx.conf
+  goaccess.42.fr_nginx:
+    file: ./sites/goaccess.42.fr/nginx.conf
 
 secrets:
   swaegene.42.fr.crt:
