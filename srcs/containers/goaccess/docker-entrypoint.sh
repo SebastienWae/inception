@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
 if [ "$1" = 'goaccess' ]; then
+  # clear pipe
+  rm /tmp/wspipein.fifo
+  rm/tmp/wspipeout.fifo
+
   # create goaccess.42.fr dir
-  mkdir -p $DATA_DIR/goaccess.42.frs
+  mkdir -p $DATA_DIR/goaccess.42.fr
 
   # start goaccess
   exec goaccess $DATA_DIR/logs/nginx/access.log -o $DATA_DIR/goaccess.42.fr/index.html
