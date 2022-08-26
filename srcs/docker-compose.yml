@@ -96,11 +96,11 @@ services:
       - source: swaegene.42.fr.crt
       - source: swaegene.42.fr.key
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://adminer.42.fr"]
+      test: ["CMD", "curl", "-f", "localhost"]
       interval: 10s
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 1m
   ftp:
     container_name: ftp
     restart: always
