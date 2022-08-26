@@ -83,7 +83,6 @@ services:
     depends_on:
       - wordpress
       - adminer
-      - goaccess
     volumes:
       - files:/home/swaegene/data
     configs:
@@ -96,6 +95,12 @@ services:
     secrets:
       - source: swaegene.42.fr.crt
       - source: swaegene.42.fr.key
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://adminer.42.fr"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
   ftp:
     container_name: ftp
     restart: always
@@ -130,6 +135,9 @@ services:
       dockerfile: Dockerfile
       args:
         - DATA_DIR=/home/swaegene/data
+    depends_on:
+      nginx:
+        condition: service_healthy
     ports:
       - 9999:9999
       - 7890:7890

@@ -7,7 +7,7 @@ RUN set -eux \
   # update package index
   && apt-get update \
   # install nginx
-  && apt-get -y install nginx \
+  && apt-get -y install nginx curl \
   # create nginx run directory
   && mkdir /var/run/nginx
 
