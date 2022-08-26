@@ -143,6 +143,17 @@ services:
       - 7890:7890
     volumes:
       - files:/home/swaegene/data
+  static:
+    container_name: static
+    build:
+      context: ./containers/static
+      dockerfile: Dockerfile
+      args:
+        - DATA_DIR=/home/swaegene/data
+    ports:
+      - 8080:80
+    volumes:
+      - files:/home/swaegene/data
 
 configs:
   swaegene.42.fr_nginx:

@@ -30,6 +30,9 @@ adminer:
 goaccess:
 	$(DOCKER_COMPOSE) build --no-cache goaccess
 
+static:
+	$(DOCKER_COMPOSE) build --no-cache static
+
 down:
 	$(DOCKER_COMPOSE) down -v
 
