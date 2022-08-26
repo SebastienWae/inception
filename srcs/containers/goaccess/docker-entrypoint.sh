@@ -2,8 +2,7 @@
 
 if [ "$1" = 'goaccess' ]; then
   # clear pipe
-  rm /tmp/wspipein.fifo
-  rm/tmp/wspipeout.fifo
+  rm /tmp/*
 
   # create goaccess.42.fr dir
   mkdir -p $DATA_DIR/goaccess.42.fr
