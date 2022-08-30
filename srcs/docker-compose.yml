@@ -10,7 +10,7 @@ services:
     networks:
       - database
     volumes:
-      - database:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
     secrets:
       - source: mariadb_root_password
       - source: mariadb_wordpress_password
@@ -31,7 +31,7 @@ services:
     networks:
       - redis
     volumes:
-      - files:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
     secrets:
       - source: redis_password
     healthcheck:
@@ -58,7 +58,7 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - files:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
     configs:
       - source: swaegene.42.fr_setup
         target: /home/swaegene/data/swaegene.42.fr/setup.sh
@@ -84,7 +84,7 @@ services:
       - wordpress
       - adminer
     volumes:
-      - files:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
     configs:
       - source: swaegene.42.fr_nginx
         target: /etc/nginx/sites-enabled/swaegene.42.fr.conf
@@ -114,7 +114,7 @@ services:
       - 0.0.0.0:21:21
       - 21100-21110:21100-21110
     volumes:
-      - files:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
     secrets:
       - source: ftp_password
   adminer:
@@ -125,7 +125,7 @@ services:
       args:
         - DATA_DIR=/home/swaegene/data
     volumes:
-      - files:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
     networks:
       - database
   goaccess:
@@ -142,7 +142,7 @@ services:
       - 9999:9999
       - 7890:7890
     volumes:
-      - files:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
   static:
     container_name: static
     build:
@@ -153,7 +153,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - files:/home/swaegene/data
+      - /home/swaegene/data:/home/swaegene/data
 
 configs:
   swaegene.42.fr_nginx:
@@ -182,10 +182,6 @@ secrets:
     file: ./secrets/swaegene.42.fr_user_password
   ftp_password:
     file: ./secrets/ftp_password
-
-volumes:
-  files:
-  database:
 
 networks:
   database:

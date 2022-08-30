@@ -1,6 +1,6 @@
 DOCKER_COMPOSE = docker compose --file srcs/docker-compose.yml
 
-all: gen-certs gen-pass
+all: srcs/secrets
 	$(DOCKER_COMPOSE) up -d --build
 
 up:
@@ -42,6 +42,6 @@ clean: down
 prune: clean
 	docker system prune --force --volumes
 
-secrets:
+srcs/secrets:
 	./srcs/tools/gen-cert.sh
 	./srcs/tools/gen-pass.sh

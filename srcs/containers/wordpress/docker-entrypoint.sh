@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 
 if [ "$1" = 'wordpress' ]; then
-  # create directories
-  mkdir -p $DATA_DIR/logs/php-fpm
-  mkdir -p $DATA_DIR/logs/www
-  mkdir -p /var/www
-  chown -R www-data:www-data /var/www
+  if [ ! -d "$DATA_DIR/logs/php-fpm" ]; then
+    mkdir -p $DATA_DIR/logs/php-fpm
+    mkdir -p $DATA_DIR/logs/www
+    mkdir -p /var/www
+    chown -R www-data:www-data /var/www
+  fi
 
-  # setup swaegene.42.fr
-  source $DATA_DIR/swaegene.42.fr/setup.sh
+  if [ ! -d "$DATA_DIR/swaegene.42.fr/wordpress" ]; then
+    source $DATA_DIR/swaegene.42.fr/setup.sh
+  fi
 
-  # start php-fpm as www-data
   exec php-fpm7.3
 fi
 
