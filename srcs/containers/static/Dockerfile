@@ -1,22 +1,22 @@
 FROM debian:buster
 
-ARG DATA_DIR
-ENV DATA_DIR=$DATA_DIR
+ADD https://deb.nodesource.com/setup_16.x node_setup
+RUN set -eux \
+  && bash node_setup
 
 RUN set -eux \
   # update package index
   && apt-get update \
-  # install curl
-  && apt-get install -y curl npm git
-
-RUN set -eux \
   # install nodejs
-  && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install -y nodejs
+
+ADD https://github.com/sebastienwae/debugging-42/archive/main.tar.gz debugging-42.tar.gz
+RUN set -eux \
+  && tar xvfz debugging-42.tar.gz \
+  && mv debugging-42-main static.42.fr \
+  && rm -f debugging-42.tar.gz
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "docker-entrypoint.sh" ]
-
-WORKDIR $DATA_DIR
 
 CMD ["static"]
